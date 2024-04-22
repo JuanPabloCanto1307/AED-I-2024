@@ -92,3 +92,6 @@ nEsimoPrimo n | n == 1 = 0
 compruebaPrimo :: Integer -> Integer
 compruebaPrimo n | esPrimo n = 1
                  | otherwise = 0
+
+--EJ 19
+
