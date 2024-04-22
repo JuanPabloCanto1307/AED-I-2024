@@ -1,3 +1,4 @@
+import System.Console.Haskeline (Interrupt)
 -- EJ 1
 
 fibonacci :: Integer -> Integer
@@ -61,28 +62,33 @@ cantDigitos n | n < 10 = 1
 
 -- EJ 13
 
---sumaNum :: Int -> Int
---sumaNum n | n == 1 = 1
---          | n > 1 = n + sumaNum (n - 1)
-
---sumaPot :: Int -> Int -> Int
---sumaPot n m | m == 1 = (sumaNum n)^m
---            | m > 1 = (sumaNum n)^m + sumaPot n (m -)
-
---SumaPot esta elevando el resultado completo de sumaNum y no cada termino
-
 sumaNum :: Int -> Int -> Int
 sumaNum n m | n == 1 = n^m
             | n > 1 = n^m + sumaNum (n - 1) m
 
 sumaPot :: Int -> Int -> Int
 sumaPot n m | m == 1 = sumaNum n m
-            | m > 1 = (sumaNum n m) + (sumaPot n (m - 1)) 
+            | m > 1 = sumaNum n m + sumaPot n (m - 1)
 
 --EJ 16
 
-menorDivisorAux :: Int -> Int -> Int
-menorDivisorAux 2 n | n > 2 = menorDivisorAux (2 (n-1))
+menorDivisor :: Integer -> Integer
+menorDivisor n = menorDivisorDesde n 2
 
-menorDivisor :: Int -> Int
-menorDivisor n | 
+menorDivisorDesde :: Integer -> Integer -> Integer
+menorDivisorDesde n d | mod n d == 0 = d
+                      | otherwise = menorDivisorDesde n (d + 1) --Para porque en el peor de los casos se divide por si mismo
+
+esPrimo :: Integer -> Bool
+esPrimo n = menorDivisor n == n
+
+sonCoprimos :: Integer -> Integer -> Bool
+sonCoprimos n m = esPrimo n && esPrimo m
+
+nEsimoPrimo :: Integer -> Integer
+nEsimoPrimo n | n == 1 = 0
+              | n > 0 = compruebaPrimo n + nEsimoPrimo (n - 1)
+
+compruebaPrimo :: Integer -> Integer
+compruebaPrimo n | esPrimo n = 1
+                 | otherwise = 0
